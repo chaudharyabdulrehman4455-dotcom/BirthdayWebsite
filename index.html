@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Journey | Happy Birthday</title>
+    
+    <!-- Libraries (CDNs) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.27/dist/lenis.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-dark: #0a0a0c;
+            --accent-neon: #00ff85; /* 2025 Trending Neon Green */
+            --accent-glow: rgba(0, 255, 133, 0.3);
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* --- Custom Scrollbar --- */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+
+        /* --- Sections --- */
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        /* --- Typography --- */
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 10vw, 8rem);
+            line-height: 1;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .gradient-text {
+            background: linear-gradient(to bottom, #fff 30%, var(--accent-neon));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .glow-button {
+            padding: 1rem 2.5rem;
+            background: transparent;
+            border: 1px solid var(--accent-neon);
+            color: var(--accent-neon);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: 0.4s;
+            position: relative;
+            overflow: hidden;
+            margin-top: 2rem;
+        }
+
+        .glow-button:hover {
+            background: var(--accent-neon);
+            color: var(--bg-dark);
+            box-shadow: 0 0 30px var(--accent-glow);
+        }
+
+        /* --- Narrative Elements --- */
+        .reveal-text { opacity: 0; transform: translateY(30px); }
+
+        /* --- Memory Lane (Parallax) --- */
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            max-width: 1000px;
+        }
+
+        .memory-card {
+            background: #16161a;
+            height: 300px;
+            width: 100%;
+            border-radius: 4px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #222;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .memory-card span { color: var(--text-dim); font-style: italic; }
+
+        /* --- Interactive Cake Section --- */
+        #cake-section { background: radial-gradient(circle at center, #1a1a2e 0%, var(--bg-dark) 100%); }
+
+        .candle-container {
+            width: 20px;
+            height: 80px;
+            background: #eee;
+            position: relative;
+            margin-top: 50px;
+            border-radius: 4px;
+        }
+
+        .flame {
+            width: 16px;
+            height: 26px;
+            background: #ff7e00;
+            border-radius: 50% 50% 20% 20%;
+            position: absolute;
+            top: -30px;
+            left: 2px;
+            box-shadow: 0 0 20px #ff7e00;
+            animation: flicker 0.1s infinite alternate;
+        }
+
+        @keyframes flicker {
+            0% { transform: scale(1); opacity: 0.9; }
+            100% { transform: scale(1.1); opacity: 1; }
+        }
+
+        .candle-instruction {
+            margin-top: 2rem;
+            color: var(--accent-neon);
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            opacity: 0.7;
+        }
+
+        /* --- Confetti --- */
+        #confetti-canvas {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- 1. Hero Section -->
+    <section id="hero">
+        <h1 class="reveal-text">Hi <span class="gradient-text">Beautiful</span>.</h1>
+        <p class="reveal-text" style="color: var(--text-dim);">A journey made just for you.</p>
+        <button class="glow-button reveal-text" onclick="scrollToNext()">Begin the Story</button>
+    </section>
+
+    <!-- 2. The Narrative Journey -->
+    <section id="journey">
+        <div style="max-width: 600px; text-align: center;">
+            <h2 class="reveal-text" style="font-size: 3rem; margin-bottom: 2rem;">Every year has a rhythm...</h2>
+            <p class="reveal-text" style="font-size: 1.2rem; color: var(--text-dim);">But this one was special because it belonged to you. You've grown, you've laughed, and you've changed the world of everyone around you—especially mine.</p>
+        </div>
+    </section>
+
+    <!-- 3. Memory Lane -->
+    <section id="memories">
+        <h2 class="reveal-text" style="margin-bottom: 4rem; opacity: 0.5;">Moments I'll never forget</h2>
+        <div class="memory-grid">
+            <div class="memory-card reveal-text" style="transform: rotate(-2deg);"><span>[ Insert Memory 1 Photo ]</span></div>
+            <div class="memory-card reveal-text" style="transform: rotate(3deg); margin-top: 50px;"><span>[ Insert Memory 2 Photo ]</span></div>
+            <div class="memory-card reveal-text" style="transform: rotate(-1deg);"><span>[ Insert Memory 3 Photo ]</span></div>
+            <div class="memory-card reveal-text" style="transform: rotate(2deg); margin-top: 50px;"><span>[ Insert Memory 4 Photo ]</span></div>
+        </div>
+    </section>
+
+    <!-- 4. The Interactive Birthday Surprise -->
+    <section id="cake-section">
+        <h2 class="reveal-text" style="margin-bottom: 0;">Make a Wish</h2>
+        <div class="candle-container">
+            <div class="flame" id="birthday-flame"></div>
+        </div>
+        <p class="candle-instruction" id="instruction-text">BLOW ON YOUR MIC (OR CLICK THE CANDLE)</p>
+        
+        <div id="final-message" style="display: none; text-align: center; margin-top: 2rem;">
+            <h1 class="gradient-text" style="font-size: 4rem;">HAPPY BIRTHDAY!</h1>
+            <p style="color: var(--text-dim);">May every wish you made today come true.</p>
+        </div>
+    </section>
+
+    <script>
+        // 1. Smooth Scroll Initialization (Lenis)
+        const lenis = new Lenis();
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // 2. GSAP Scroll Animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        const revealElements = document.querySelectorAll('.reveal-text');
+        revealElements.forEach((el) => {
+            gsap.fromTo(el, 
+                { opacity: 0, y: 50 }, 
+                { 
+                    opacity: 1, y: 0, 
+                    duration: 1.2, 
+                    ease: "power4.out",
+                    scrollTrigger: {
+                        trigger: el,
+                        start: "top 85%",
+                        toggleActions: "play none none reverse"
+                    }
+                }
+            );
+        });
+
+        function scrollToNext() {
+            lenis.scrollTo('#journey');
+        }
+
+        // 3. The "Blow Out" Interaction (Web Audio API)
+        const flame = document.getElementById('birthday-flame');
+        const instruction = document.getElementById('instruction-text');
+        const finalMessage = document.getElementById('final-message');
+        let candleOut = false;
+
+        // Fallback: Click to blow out
+        flame.addEventListener('click', () => blowOut());
+
+        // Microphone Logic
+        async function initMicrophone() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const analyser = audioContext.createAnalyser();
+                const microphone = audioContext.createMediaStreamSource(stream);
+                microphone.connect(analyser);
+                analyser.fftSize = 256;
+                const bufferLength = analyser.frequencyBinCount;
+                const dataArray = new Uint8Array(bufferLength);
+
+                function checkVolume() {
+                    if (candleOut) return;
+                    analyser.getByteFrequencyData(dataArray);
+                    let values = 0;
+                    for (let i = 0; i < bufferLength; i++) { values += dataArray[i]; }
+                    let average = values / bufferLength;
+
+                    if (average > 60) { // Threshold for "blowing"
+                        blowOut();
+                    }
+                    requestAnimationFrame(checkVolume);
+                }
+                checkVolume();
+            } catch (err) {
+                console.log("Mic access denied or not supported. Use click fallback.");
+            }
+        }
+
+        function blowOut() {
+            if (candleOut) return;
+            candleOut = true;
+            flame.style.display = 'none';
+            instruction.style.display = 'none';
+            finalMessage.style.display = 'block';
+            startConfetti();
+            
+            gsap.from("#final-message", {
+                scale: 0.5,
+                opacity: 0,
+                duration: 1.5,
+                ease: "elastic.out(1, 0.3)"
+            });
+        }
+
+        // Initialize mic after user interaction (browser policy)
+        window.addEventListener('scroll', () => {
+            if (!candleOut) initMicrophone();
+        }, { once: true });
+
+        // 4. Confetti Cannon (Simple Canvas)
+        function startConfetti() {
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            let particles = [];
+            for (let i = 0; i < 150; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: canvas.height + Math.random() * 100,
+                    r: Math.random() * 6 + 2,
+                    d: Math.random() * 10,
+                    color: `hsl(${Math.random() * 360}, 70%, 60%)`,
+                    vx: Math.random() * 4 - 2,
+                    vy: -Math.random() * 15 - 10
+                });
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach((p, i) => {
+                    ctx.beginPath();
+                    ctx.fillStyle = p.color;
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    p.y += p.vy;
+                    p.x += p.vx;
+                    p.vy += 0.2; // Gravity
+                });
+                requestAnimationFrame(draw);
+            }
+            draw();
+        }
+    </script>
+</body>
+</html>
